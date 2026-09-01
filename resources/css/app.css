@@ -1,0 +1,370 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/livewire/dist/**/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+| Self-hosted latin subsets (112 KB total). Geist for UI, Instrument Sans for
+| display, Geist Mono for every figure. No CDN, no build-time font fetch.
+*/
+@font-face {
+    font-family: 'Geist';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/geist-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Geist';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/geist-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Geist';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/geist-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Geist Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/geist-mono-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Geist Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/geist-mono-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/instrument-sans-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/instrument-sans-latin-600-normal.woff2') format('woff2');
+}
+
+/*
+|--------------------------------------------------------------------------
+| Design tokens — "Ledger console"
+|--------------------------------------------------------------------------
+| Neutral-dominant surfaces so colour only ever means state. One iris accent
+| for intent, four semantic tones for outcome, and mono figures everywhere a
+| number is money, a count, an ID or a date.
+*/
+@theme {
+    --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Instrument Sans', 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', 'Roboto Mono', monospace;
+
+    /* Type roles beyond the default scale */
+    --text-eyebrow: 0.6875rem;
+    --text-eyebrow--line-height: 1rem;
+    --text-eyebrow--letter-spacing: 0.13em;
+    --text-eyebrow--font-weight: 500;
+
+    --text-display: 1.625rem;
+    --text-display--line-height: 2rem;
+    --text-display--letter-spacing: -0.028em;
+
+    --text-figure: 1.75rem;
+    --text-figure--line-height: 2rem;
+    --text-figure--letter-spacing: -0.03em;
+
+    /* Surfaces */
+    --color-canvas: #f7f8fa;
+    --color-surface: #ffffff;
+    --color-raised: #ffffff;
+    --color-subtle: #f1f3f7;
+    --color-line: #e4e7ee;
+    --color-line-strong: #d2d7e1;
+
+    /* Text tiers */
+    --color-ink: #10121a;
+    --color-ink-soft: #3e4455;
+    --color-muted: #66708a;
+    --color-faint: #98a1b5;
+
+    /* Intent */
+    --color-accent: #4145bd;
+    --color-accent-solid: #4b4fcb;
+    --color-accent-hover: #3d41ad;
+    --color-accent-fg: #ffffff;
+    --color-accent-soft: #ecedfb;
+    --color-accent-line: #cdcff5;
+
+    /* Outcome */
+    --color-success: #0a7a52;
+    --color-success-soft: #e2f4ec;
+    --color-success-line: #bde3d2;
+    --color-warn: #9a5b06;
+    --color-warn-soft: #fbf0dd;
+    --color-warn-line: #efd7ab;
+    --color-danger: #bb2f30;
+    --color-danger-soft: #fbe9e9;
+    --color-danger-line: #f0c9c9;
+    --color-info: #1e5fb0;
+    --color-info-soft: #e7effb;
+    --color-info-line: #c6dbf5;
+
+    --color-focus: #4b4fcb;
+
+    /* Elevation — borders carry structure, shadow only lifts overlays */
+    --shadow-xs: 0 1px 2px 0 rgb(16 18 26 / 0.05);
+    --shadow-sm: 0 1px 2px 0 rgb(16 18 26 / 0.06), 0 1px 3px 0 rgb(16 18 26 / 0.04);
+    --shadow-md: 0 4px 12px -4px rgb(16 18 26 / 0.12), 0 2px 4px -2px rgb(16 18 26 / 0.06);
+    --shadow-lg: 0 16px 40px -16px rgb(16 18 26 / 0.26), 0 4px 12px -6px rgb(16 18 26 / 0.1);
+    --shadow-pop: 0 28px 70px -28px rgb(16 18 26 / 0.38), 0 8px 20px -12px rgb(16 18 26 / 0.14);
+
+    --animate-pop-in: pop-in 0.14s ease-out;
+    --animate-fade-in: fade-in 0.14s ease-out;
+    --animate-rise: rise 0.16s ease-out;
+    --animate-shimmer: shimmer 1.5s linear infinite;
+    --animate-spin-fast: spin 0.6s linear infinite;
+}
+
+/* Unlayered so it wins over @layer theme regardless of source order. */
+.dark {
+    --color-canvas: #0a0c10;
+    --color-surface: #12151b;
+    --color-raised: #171b22;
+    --color-subtle: #1a1e26;
+    --color-line: #232833;
+    --color-line-strong: #333a48;
+
+    --color-ink: #e8eaf0;
+    --color-ink-soft: #c2c8d4;
+    --color-muted: #8b94a6;
+    --color-faint: #69728a;
+
+    --color-accent: #a9abf8;
+    --color-accent-solid: #5257e0;
+    --color-accent-hover: #6367e8;
+    --color-accent-fg: #ffffff;
+    --color-accent-soft: #1d2044;
+    --color-accent-line: #343a7a;
+
+    --color-success: #4bd39d;
+    --color-success-soft: #0e2a20;
+    --color-success-line: #1d5340;
+    --color-warn: #f0b45c;
+    --color-warn-soft: #2c2113;
+    --color-warn-line: #5a4321;
+    --color-danger: #f88b8b;
+    --color-danger-soft: #2e1719;
+    --color-danger-line: #5d2c2f;
+    --color-info: #7fb6f5;
+    --color-info-soft: #12233a;
+    --color-info-line: #24425f;
+
+    --color-focus: #8b8ff2;
+
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+    --shadow-md: 0 4px 14px -4px rgb(0 0 0 / 0.6);
+    --shadow-lg: 0 18px 44px -18px rgb(0 0 0 / 0.7);
+    --shadow-pop: 0 30px 80px -30px rgb(0 0 0 / 0.8), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+
+    color-scheme: dark;
+}
+
+@layer base {
+    html {
+        @apply antialiased;
+        color: var(--color-ink);
+        background-color: var(--color-canvas);
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        min-height: 100svh;
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        line-height: 1.55;
+        background-color: var(--color-canvas);
+        font-feature-settings: 'cv11', 'ss01';
+    }
+
+    /* Numbers are a voice in this app: always mono, always aligned. */
+    .font-mono,
+    table td,
+    table th {
+        font-variant-numeric: tabular-nums;
+    }
+
+    h1,
+    h2,
+    h3 {
+        text-wrap: balance;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-focus);
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
+
+    ::selection {
+        background: color-mix(in srgb, var(--color-accent-solid) 24%, transparent);
+    }
+
+    ::placeholder {
+        color: var(--color-faint);
+    }
+
+    [hidden],
+    [x-cloak] {
+        display: none !important;
+    }
+
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-line-strong) transparent;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-line-strong);
+        border: 3px solid transparent;
+        background-clip: content-box;
+        border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-faint);
+        border: 3px solid transparent;
+        background-clip: content-box;
+    }
+}
+
+/*
+| Density — one knob the shell flips, every table and nav row reads it.
+*/
+:root {
+    --row-py: 0.625rem;
+    --nav-py: 0.4375rem;
+}
+
+[data-density='compact'] {
+    --row-py: 0.375rem;
+    --nav-py: 0.3125rem;
+}
+
+@utility row-y {
+    padding-block: var(--row-py);
+}
+
+@utility nav-y {
+    padding-block: var(--nav-py);
+}
+
+/* Hairline column rule used by the ledger tables and metric rails. */
+@utility rail {
+    box-shadow: inset 2px 0 0 0 currentColor;
+}
+
+/* j/k keyboard cursor on any list row. */
+[data-list-cursor] > td {
+    background-color: var(--color-subtle);
+}
+
+[data-list-cursor] > td:first-child {
+    box-shadow: inset 2px 0 0 0 var(--color-accent-solid);
+}
+
+@utility scroll-none {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@keyframes pop-in {
+    from {
+        opacity: 0;
+        transform: scale(0.98) translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes shimmer {
+    from {
+        background-position: -120% 0;
+    }
+    to {
+        background-position: 220% 0;
+    }
+}
+
+.skeleton {
+    background-image: linear-gradient(
+        90deg,
+        var(--color-subtle) 0%,
+        color-mix(in srgb, var(--color-line) 70%, var(--color-surface)) 45%,
+        var(--color-subtle) 90%
+    );
+    background-size: 220% 100%;
+    animation: var(--animate-shimmer);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
