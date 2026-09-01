@@ -39,4 +39,9 @@ $app = require_once $laravelRoot.'/bootstrap/app.php';
 
 $app->usePublicPath(__DIR__);
 
+$app->singleton(
+    \Illuminate\Contracts\Foundation\MaintenanceMode::class,
+    fn ($app) => new \Illuminate\Foundation\FileBasedMaintenanceMode($app->make('files'))
+);
+
 $app->handleRequest(Request::capture());

@@ -20,5 +20,9 @@ if (!file_exists('/tmp/database.sqlite')) {
     @touch('/tmp/database.sqlite');
 }
 
+putenv('APP_MAINTENANCE_DRIVER=file');
+$_ENV['APP_MAINTENANCE_DRIVER'] = 'file';
+$_SERVER['APP_MAINTENANCE_DRIVER'] = 'file';
+
 // Forward Vercel serverless requests to public/index.php
 require __DIR__ . '/../public/index.php';
