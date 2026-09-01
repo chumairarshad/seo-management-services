@@ -14,6 +14,8 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->preventRequestsDuringMaintenance(except: ['*']);
+
         $middleware->alias([
             'active' => EnsureUserIsActive::class,
             'permission' => EnsurePermission::class,
@@ -28,10 +30,12 @@ $app = Application::configure(basePath: dirname(__DIR__))
         );
     })->create();
 
-$app->singleton(
-    \Illuminate\Contracts\Foundation\MaintenanceMode::class,
-    fn ($app) => new \Illuminate\Foundation\FileBasedMaintenanceMode($app->make('files'))
-);
+$app->booting(function ($app) {
+    $app->singleton(
+        \Illuminate\Contracts\Foundation\MaintenanceMode::class,
+        fn () => new \Illuminate\Foundation\FileBasedMaintenanceMode($app->make('files'))
+    );
+});
 
 if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || is_dir('/tmp/storage')) {
     $app->useStoragePath('/tmp/storage');
