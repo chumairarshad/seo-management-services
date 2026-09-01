@@ -31,9 +31,14 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })->create();
 
 $app->booting(function ($app) {
-    $app->singleton(
-        \Illuminate\Contracts\Foundation\MaintenanceMode::class,
-        fn () => new \Illuminate\Foundation\FileBasedMaintenanceMode($app->make('files'))
+    $app->instance(
+        \Illuminate\Foundation\MaintenanceModeManager::class,
+        new class($app) extends \Illuminate\Foundation\MaintenanceModeManager {
+            public function driver($driver = null)
+            {
+                return new \Illuminate\Foundation\FileBasedMaintenanceMode($this->container['files']);
+            }
+        }
     );
 });
 
