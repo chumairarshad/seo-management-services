@@ -28,6 +28,11 @@ $app = Application::configure(basePath: dirname(__DIR__))
         );
     })->create();
 
+$app->singleton(
+    \Illuminate\Contracts\Foundation\MaintenanceMode::class,
+    fn ($app) => new \Illuminate\Foundation\FileBasedMaintenanceMode($app->make('files'))
+);
+
 if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || is_dir('/tmp/storage')) {
     $app->useStoragePath('/tmp/storage');
 }
